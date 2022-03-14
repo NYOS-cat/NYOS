@@ -1,1 +1,439 @@
-site down; do not visit.
+<!-- You will not find me here..-->
+<!-- You have been warned! The code you are about to read, view it at the cost of your own sanity-->
+
+<!-- If is it secrets you are after; then you will have to look harder. -->
+<html>
+
+<audio id="boot">
+  <source src="intro.mp3" type="audio/mpeg">
+</audio>
+<audio loop id="him">
+  <source src="him.mp3" type="audio/mpeg">
+</audio>
+<audio loop id="amb">
+  <source src="amb.mp3" type="audio/mpeg">
+</audio>
+<audio loop id="ambienttrack">
+  <source src="tracklist/amb.mp3" type="audio/ogg">
+</audio>
+<script>
+ambienttrack.innerHTML = "<source src=\"tracklist/"+ trackswap() +".ogg\" type=\"audio/ogg\">"
+
+function trackswap(){
+	no = Math.floor(Math.random() * 5)
+	return no
+	}
+				
+</script>
+			
+<script>
+var x = document.getElementById("boot"); 
+var y = document.getElementById("him"); 
+var amb = document.getElementById("amb");
+var rad = document.getElementById("ambienttrack");
+ 
+function playInt() { 
+  x.play(); 
+  amb.play(); 
+} 
+
+function playRadio() { 
+  rad.volume = 0.2;
+  rad.play(); 
+} 
+
+function playHim() { 
+  y.play(); 
+} 
+
+</script>
+
+<style>
+
+@font-face {
+    font-family: 'pixelmplus12regular';
+    src: url('pixelmplus12-regular-webfont.woff2') format('woff2'),
+         url('pixelmplus12-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+#title {
+  position: relative;
+  animation-iteration-count: 1;
+  animation-name: title;
+  animation-duration: 7s;
+}
+	
+a:link {
+  color: green;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:visited {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:hover {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:active {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
+}
+	
+#shakey {
+  position: relative;
+  animation-iteration-count: infinite;
+  animation-name: shake;
+  animation-duration: 0.02s;
+  
+}
+
+html, body {margin: 0; height: 100%; overflow: hidden}
+
+body {
+  background-image: url("black.png");
+  background-color: black;
+}
+
+#intro {
+  position: static;
+  animation-iteration-count: 1;
+  animation-name: intro;
+  animation-duration: 10s;
+  opacity:0;
+}
+
+#idlehover{
+  position: relative;
+  animation-iteration-count: infinite;
+  animation-name: hover;
+  animation-duration: 4s;
+}
+
+#stati {
+  position: static;
+  animation-iteration-count: 1;
+  animation-name: fadestatic;
+  animation-duration: 3s;
+  opacity:0.15;
+}
+
+#main {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -71%);
+  width:70%;
+  font-family: pixelmplus12regular;
+  font-size:18px;
+  
+  color: #FFFFFF;
+  animation-iteration-count: 1;
+  animation-name: revealmain;
+  animation-duration: 13s;
+  opacity:1;
+}
+
+
+@keyframes revealmain {
+  0% {opacity:0; top:-100px;}
+  1% {opacity:0; top:-100px;}
+  90% {opacity:0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -71%);}
+  100% {opacity:1; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -71%);}
+}
+
+
+#error {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -65%);
+  font-family: pixelmplus12regular;
+  font-size:25px;
+  color: #FFFFFF;
+  animation-iteration-count: 1;
+  animation-name: revealmain;
+  animation-duration: 11s;
+  opacity:1;
+}
+
+#headertextt {
+  font-family: pixelmplus12regular;
+  font-size:25px;
+  color: #FFFFFF;
+}
+
+#fade {
+  animation-iteration-count: 1;
+  animation-name: fade;
+  animation-duration: 7s;
+}
+
+#onbutton {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+
+@keyframes title {
+  0%   {left:0px; top:-1000px;}
+  45%   {left:0px; top:-1000px;}
+  70%  {left:0px; top:-5px;}
+  80% {left:0px; top:3px;}
+  100% {left:0px; top:0px;}
+}
+
+@keyframes shake {
+  0%   {transform: rotateZ(-0.4deg);}
+  25%  {transform: rotateZ(0.4deg);}
+  50%  {transform: rotateZ(-0.4deg);}
+  75%  {transform: rotateZ(0.4deg);}
+  100% {transform: rotateZ(-0.4deg);}
+}
+
+@keyframes hover {
+  0%   {left:0px; top:0px;}
+  50%  {left:0px; top:-5px;}
+  100% {left:0px; top:0px;}
+}
+
+@keyframes fade {
+  0% {opacity:1;}
+  1% {opacity:0;}
+  70% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@keyframes intro {
+  0% {opacity:1;}
+  1% {opacity:1;}
+  80% {opacity:1;}
+  100% {opacity:0;}
+}
+@keyframes fadestatic {
+  0% {opacity:1;}
+  1% {opacity:0.8;}
+  50% {opacity:0.2;}
+  100% {opacity:0.15;}
+}
+
+
+</style>
+
+<div id="onbutton">
+	<input src="activate.png" border="0" type="image" onclick="etbutton()"></input>
+	
+</div>
+
+<div id="activate" style="display: none;">
+
+	<script>
+	function etbutton() {
+	  var x = document.getElementById("activate");
+	  var y = document.getElementById("onbutton");
+	  var body = document.getElementById("body");
+	  var intro = document.getElementById("intro");
+	  var error = document.getElementById("error");
+	  var main = document.getElementById("error");
+	  
+	  if (x.style.display === "none") {
+		x.style.display = "block";
+		y.style.display = "none";
+		document.body.style.backgroundImage = "url('bg.gif')";
+		playInt()
+		setTimeout(hideIntro, 9500);
+	  }
+	}
+	function hideIntro(){
+		var d = new Date();
+		var n = d.getHours();
+		console.log(d.getHours())
+		if(d.getHours()==3){
+			bigChungus()
+		}else{
+			error.style.display = "none";
+			playRadio();
+		}
+		intro.style.display = "none";
+	}
+	function bigChungus(){
+		main.style.display = "none";
+		error.style.display = "block";
+		setTimeout(playHim, 4400);
+	}
+	</script>
+	
+	<div id="stati" style="background-image: url('static.gif');z-index: 77;">
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+	</div>	
+
+	<!-- intro -->
+		<div id="intro">
+			<div align="center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -85%);">
+				<!-- <body bgcolor="#000000"> -->
+				<div id="idlehover">
+					<div id="title">
+						<TITLE>NyOS</TITLE>
+						
+						<img border="0" src="nyos.png" alt="nyo" width="500" height="237"></a>
+						<img src="y.gif" alt="Snow" style="width:5%">
+						<br>
+						
+						<div id="fade">
+							<div id="headertextt">
+
+							</div>
+						</div>
+				</div>
+			</div>
+
+
+			<script>
+			headertextt.innerHTML = random_string()
+			//yes this is how to java
+			function random_string(){
+				list_of_strings = ["Linking...","I'm moving past the feeling again","Living in the sprawl","spoon man","I hear your heart beat to the beat of the drums","Let's make the most of the night, like we're gonna die young","I made friends with a witch one day.","In four-hundred-thousand meters, turn right.","Where does this road go?","The sun is alone, yet shines the brightest.","Tonight, Gehrman joins the hunt.","Prepare yourself.","CAUTION!!!","woah its just like minecraft's flavor text!","I desperately wish to be included by the city's night!","I am fire!","Goldfish approved!","Today, a star of the city shall fall.","2.7182818284590452353602874713527","Explore beyond!","mods i spil my code hep hep help hep!!!","Sponsored by the Moon!","mmm soup","Making all kinds of stuff!","Fixing comedy one shitpost at a time!","NYOS Initialized! Welcome home!","What is a Yun?","All must serve the cycle!","These cats can, and will continue to hack robots like they've never hacked before!","Delete all that is unneeded!","Please select a save file!","You should try out Library of Runia!","Let's have a nice cup of tea!","Load/Save","Nothing escapes our gaze!","Witnessing reality!","I cant code help pls!","The solstice falls over Wintersoul!","Dango Dango Dango Daikazoku!","The cats that run this page like to make things!","Our reality was cruel, so we got rid of it!","Source 1.5 runs 48-bit","mmm soup","Source 1.5 runs 48-bit","Wrap yourself in cables and feel refreshed!","Treat every computer like a cat!","I love computers, so I turned myself into one!","Making nonsense since 2017!","What game will we play today!","What is a Metastruct?","The sound of thunder is thrilling indeed!","There are always rainbows after the storms!","Black cats deserve the most love!","Make sure to pet each and every cat!","Remember the good times, forget the new!","Forget reality, embrace the system!","Which computer will explode today?","To the Cat's eye, you are wonderful!","Learning one failure at a time!","Cat Computers love the cold!", "Chocolate is overrated!", "Snails are cute!"]
+
+				chosensentence = Math.floor(Math.random() * list_of_strings.length)
+
+				sentence = list_of_strings[chosensentence]
+
+				return sentence
+				}
+				
+			</script>
+		</div>
+	</div>
+	
+		<div id="main" align="center" >
+			<a>[IT IS TIME TO GO]</a>
+			<br>
+			<a style="color: #FFFFFF>" href="https://www.youtube.com/watch?v=uvaex1yXqGw">● (✿╹◡╹) ●</a>
+		</div>
+		
+		<!-- ERROR-->
+		<div id="error" style="z-index: -1" >
+				<img src="big.gif" width="325" height="355">
+			<div id="shakey">
+				<p style="color: #808080; z-index: -1" align="center">  You should not be here</p>
+			<div>	
+		<div>
+	</div>
+</div>
