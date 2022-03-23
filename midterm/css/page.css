@@ -1,0 +1,46 @@
+@charset "utf-8";
+#blue {
+    background-color: blue;
+    height: 100px;
+    width: 100px;
+    clear: right;
+    float: none;
+}
+#red {
+    background-color: red;
+    height: 100px;
+    width: 100px;
+    clear: none;
+}
+#yellow {
+    background-color: yellow;
+    height: 100px;
+    width: 100px;
+    float: left;
+    clear: right;
+}
+#purple {
+    background-color: purple;
+    height: 100px;
+    width: 100px;
+    clear: none;
+    float: left;
+}
+#green {
+    background-color: green;
+    height: 100px;
+    width: 100px;
+    float: left;
+    clear: right;
+}
+
+#orange {
+    background-color: orange;
+    height: 100px;
+    width: 100px;
+    float: none;
+    clear: none;
+    position: absolute;
+    top: 200px;
+    left: 400px;
+}
