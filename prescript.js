@@ -45,7 +45,7 @@
 				
 				
 				//decide wether to use a predetermined one or not.
-				israndom = Math.floor((Math.random()*8))
+				israndom = Math.floor((Math.random()*75))
 				console.log(israndom)
 				locationA = [
 							"beach",
