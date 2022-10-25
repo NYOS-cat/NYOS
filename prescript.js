@@ -109,7 +109,7 @@
 						"Go to a "+finalllocation,
 					]
 					preset = Math.floor(Math.random() * preprescript.length)
-					finalscript = "To " + name + ", " + preprescript[preset]
+					finalscript = preprescript[preset]
 				}else{
 					//adjactive
 							personidentifyer = [
@@ -1034,7 +1034,7 @@ task1set = Math.floor(Math.random() * task1.length)
 					
 							
 							//generate final script.
-							//finalscript = "To " + name + ", " + finaltask0 + finalstarter + finaltask1
+							//finalscript = finaltask0 + finalstarter + finaltask1
 							
 					}
 
