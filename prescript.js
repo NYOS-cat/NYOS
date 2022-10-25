@@ -3,13 +3,6 @@
 			function json(url) {
 			  return fetch(url).then(res => res.json());
 			}
-			if (localStorage.getItem("username") === "") {
-				let apiKey = '123abed3f95fed00800419589c605ddec514ad1fd7c80cc5220303dc';
-					json(`https://api.ipdata.co?api-key=${apiKey}`).then(data => {
-					  localStorage.setItem("ip",data.ip)
-					  localStorage.setItem("country",data.country_code)
-					});
-			}	
 			
 			//the rumbles of the city.
 			var d = new Date();
@@ -985,9 +978,9 @@ task1set = Math.floor(Math.random() * task1.length)
 							transitionset = Math.floor(Math.random() * transition.length)
 							finaltransition = transition[transitionset]
 							if(finalfollowup2==""){
-								finalscript = "To " + name + ", " + finaltask0 + finalstarter + finaltask1 + finaltransition + finalfollowup + "."
+								finalscript = finaltask0 + finalstarter + finaltask1 + finaltransition + finalfollowup + "."
 							}else{
-								finalscript = "To " + name + ", " + finaltask0 + finalstarter + finaltask1 + finaltransition + finalfollowup + "."+ finalfollowup2
+								finalscript = finaltask0 + finalstarter + finaltask1 + finaltransition + finalfollowup + "."+ finalfollowup2
 							}
 						}else{
 							
@@ -1031,9 +1024,9 @@ task1set = Math.floor(Math.random() * task1.length)
 							finalfollowup2=""
 						}
 						if(finalfollowup2==""){
-								finalscript = "To " + name + ", " + finaltask0 + finalstarter + finaltask1 + "."
+								finalscript = finaltask0 + finalstarter + finaltask1 + "."
 							}else{
-								finalscript = "To " + name + ", " + finaltask0 + finalstarter + finaltask1 + "." + finalfollowup2
+								finalscript = finaltask0 + finalstarter + finaltask1 + "." + finalfollowup2
 							}
 						//No followup
 						
@@ -1165,12 +1158,14 @@ task1set = Math.floor(Math.random() * task1.length)
 								" Touch yourself while showering in "+number9+" minutes.",
 								" Go to a "+finalllocation+" and "+finalactivities,
 								" Dig a hole and climb into it.",
+								" Write the name of your favorite "+finalllocation+"on paper and leave it under a trash can.",
 								" Put up a drawing on a telephone pole.",
 								" Give "+number9+" dollars to a homeless man"+finaladditionalrandom+".",
 								" It does not matter how long you take.",
 								" Step on exactly "+number9+" bugs.",
 								" Bake a pie and eat it in "+number9+" hours.",
 								" You must sleep face down tonight.",
+								" Remember this prescript for the next "+number9+" months.",
 								" You must not cry."
 								]
 								followup2set = Math.floor(Math.random() * follow2up.length)
@@ -1179,7 +1174,7 @@ task1set = Math.floor(Math.random() * task1.length)
 								finalfollowup2=""
 							}
 							
-							finalscript = "To " + name + ", " + finaltask0 + finalstarter + finaltask3 +"."+ finalfollowup2
+							finalscript = finaltask0 + finalstarter + finaltask3 +"."+ finalfollowup2
 						}
 					}
 					
