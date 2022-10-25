@@ -597,7 +597,7 @@
 											"a "+finalpersonidentifyer+" boy",
 											"a "+finalpersonidentifyer+" girl with a "+finalcolor1+finalclothing,
 											"a "+finalpersonidentifyer+" boy with a " +finalcolor1+finalclothing,
-											"an animal",
+											"an animal"
 											"a person of your choice",
 											]
 											howtofindset = Math.floor(Math.random() * howtofind.length)
@@ -620,7 +620,7 @@
 											"a boy",
 											"a girl with a "+finalcolor1+finalclothing,
 											"a boy with a "+finalcolor1+finalclothing,
-											"an animal",
+											"an animal"
 											]
 											howtofindset = Math.floor(Math.random() * howtofind.length)
 										}
@@ -632,14 +632,20 @@
 						
 						//actions
 						actionss = [
-							"commit murder",
+							"commit a felony",
 							"steal money",
 							"betray a friend",
 							"become a proxy",
 							"play "+finalgames+" with them",
 							"talk about "+finaltopic+"",
 							"shake your hand",
-							"have sex",
+							"drink something",
+							"sit on the train tracks",
+							"travel somewhere new",
+							"drink from a puddle",
+							"eat something new",
+							"do a backflip",
+							"do a frontflip",
 							"do a lap around the city",
 							"swap wallets with you",
 							"roll a dice",
@@ -651,6 +657,32 @@
 							"climb into a trash can",
 							"jump off a bridge",
 							"draw with crayons",
+							"proceed to light them on fire.",
+							"ask about "+finaltopic2+".",
+							"ask them to marry you.",
+							"check for weapons",
+							"discard this prescript.",
+							"make them a nice meal.",
+							"give them a hug before pushing them off a bridge",
+							"go for a drive to a "+finalllocation,
+							"measure their height.",
+							"get their name.",
+							"sleep with them.",
+							"cut off all your hair",
+							"cover your face",
+							"buy them "+number9+" "+finalcolorrequire+"objects.",
+							"dye your hair "+finalcolorrequire,
+							"peel open a scab and drink the blood",
+							"measure their height.",
+							"shake hands with your sibllng.",
+							"do the same to their children.",
+							"turn the thermostat to "+number7+"F'",
+							"leave food outside the door of your house.",
+							"leave food outside of a "+finalllocation,
+							"bring them to a "+finalllocation,
+							"go home.",
+							"forget about this prescript",
+							"hit the gritty"
 						]
 						actionsssset = Math.floor(Math.random() * actionss.length)
 						finalactionss= actionss[actionsssset]
@@ -1095,7 +1127,7 @@ task1set = Math.floor(Math.random() * task1.length)
 								"eat only foods that are "+finalcolorrequire,
 								"push the closest button to you. You may look around to find it",
 								"make a picnic and eat it inside a "+finalllocation+" in "+number8+" hours",
-								"text a "+finalptype+finaladditionalrandom+" and ask if they want to "+finalactivities,
+								"text a "+finalptype+finaladditionalrandom+" and ask if they want to  "+finalactivities,
 								"act out your regular routine"+finaladditionalrandom,
 								"do not use the bathroom for "+number8+" hours",
 								"remain outside for "+number2+" seconds"
