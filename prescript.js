@@ -590,7 +590,7 @@
 											"a "+finalpersonidentifyer+" boy",
 											"a "+finalpersonidentifyer+" girl with a "+finalcolor1+finalclothing,
 											"a "+finalpersonidentifyer+" boy with a " +finalcolor1+finalclothing,
-											"an animal"
+											"an animal",
 											"a person of your choice",
 											]
 											howtofindset = Math.floor(Math.random() * howtofind.length)
