@@ -1,0 +1,49 @@
+
+<html>
+<style>
+
+@font-face {
+    font-family: 'pixelmplus12regular';
+    src: url('pixelmplus12-regular-webfont.woff2') format('woff2'),
+         url('pixelmplus12-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {margin: 5; height: 100%; overflow: hidden}
+
+body {
+  background-image: url("black.png");
+  background-color: black;
+}
+
+#fade {
+  position: absolute; top: 25%; left: 50%; transform: translate(-50%, 50%);
+
+  font-family: pixelmplus12regular;
+  font-size:18px;
+  color: #FFFFFF;
+  animation-iteration-count: 1;
+  animation-name: fade;
+  animation-duration: 7s;
+}
+	
+@keyframes fade {
+  0% {opacity:1;}
+  1% {opacity:0;}
+  1% {opacity:0;}
+  100% {opacity:1;}
+}
+</style>
+
+<body>
+	<div id="fade">
+		<img style=" display: block; margin-right: auto;  margin-left: auto; width: 157px;    height: 200px;    position: relative;" src="gush.png" alt="">
+<center>
+		<div id="a">
+			<p>I know where you live :)</p>
+		</div>
+	</center>
+
+	</div
+</body>
