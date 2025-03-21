@@ -1,0 +1,340 @@
+<!-- Before you start reading or poking into this, please note that this is the first time I have ever done HTML.-->
+<!-- You have been warned! The code you are about to read, view it at the cost of your own sanity-->
+
+<!-- also stop poking at my html, do you have no respect! >/////< -->
+<html>
+
+<audio id="boot">
+  <source src="intro.mp3" type="audio/mpeg">
+</audio>
+<audio loop id="him">
+  <source src="him.mp3" type="audio/mpeg">
+</audio>
+<audio loop id="amb">
+  <source src="amb.mp3" type="audio/mpeg">
+</audio>
+<audio loop id="ambienttrack">
+  <source src="tracklist/amb.mp3" type="audio/ogg">
+</audio>
+<script>
+ambienttrack.innerHTML = "<source src=\"tracklist/"+ trackswap() +".ogg\" type=\"audio/ogg\">"
+
+//basically same as header thing except we usin it for music
+function trackswap(){
+	no = Math.floor(Math.random() * 5)
+	return no
+	}
+				
+</script>
+			
+<script>
+var x = document.getElementById("boot"); 
+var y = document.getElementById("him"); 
+var amb = document.getElementById("amb");
+var rad = document.getElementById("ambienttrack");
+ 
+function playInt() { 
+  x.play(); 
+  amb.play(); 
+} 
+
+function playRadio() { 
+  rad.volume = 0.2;
+  rad.play(); 
+} 
+
+function playHim() { 
+  y.play(); 
+} 
+
+</script>
+
+<style>
+
+@font-face {
+    font-family: 'pixelmplus12regular';
+    src: url('pixelmplus12-regular-webfont.woff2') format('woff2'),
+         url('pixelmplus12-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+#title {
+  position: relative;
+  animation-iteration-count: 1;
+  animation-name: title;
+  animation-duration: 7s;
+}
+	
+a:link {
+  color: #ffffff;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:visited {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
+}
+a:hover {
+  color: rgb(250, 106, 106);
+  background-color: transparent;
+  text-decoration: none;
+}
+a:active {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
+}
+	
+a2:link {
+  color: #ffffff;
+  background-color: transparent;
+  text-decoration: none;
+}
+a2:visited {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
+}
+a2:hover {
+  color: rgb(106, 250, 171);
+  background-color: transparent;
+  text-decoration: none;
+}
+a2:active {
+  color: white;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+#shakey {
+  position: relative;
+  animation-iteration-count: infinite;
+  animation-name: shake;
+  animation-duration: 0.02s;
+  
+}
+
+html, body {margin: 0; height: 100%; overflow: hidden}
+
+body {
+  background-image: url("black.png");
+  background-color: black;
+}
+
+#intro {
+  position: static;
+  animation-iteration-count: 1;
+  animation-name: intro;
+  animation-duration: 10s;
+  opacity:0;
+}
+
+#idlehover{
+  position: relative;
+  animation-iteration-count: infinite;
+  animation-name: hover;
+  animation-duration: 4s;
+}
+
+#stati {
+  position: static;
+  animation-iteration-count: 1;
+  animation-name: fadestatic;
+  animation-duration: 3s;
+  opacity:0.15;
+}
+
+#main {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%);
+  width:70%;
+  font-family: pixelmplus12regular;
+  font-size:18px;
+  
+  color: #FFFFFF;
+  opacity:1;
+}
+
+#main2 {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -200%);
+  width:70%;
+  font-family: pixelmplus12regular;
+  font-size:18px;
+  
+  color: #FFFFFF;
+  opacity:1;
+}
+
+#main3 {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, 0%);
+  width:70%;
+  font-family: pixelmplus12regular;
+  font-size:18px;
+  
+  color: #FFFFFF;
+  opacity:1;
+}
+
+
+#error {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -100%);
+  font-family: pixelmplus12regular;
+  font-size:25px;
+  color: #FFFFFF;
+  animation-iteration-count: 1;
+  animation-name: revealmain;
+  animation-duration: 11s;
+  opacity:1;
+}
+
+#headertextt {
+  font-family: pixelmplus12regular;
+  font-size:25px;
+  color: #FFFFFF;
+}
+
+#fade {
+  animation-iteration-count: 1;
+  animation-name: fade;
+  animation-duration: 7s;
+}
+
+#onbutton {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+
+@keyframes title {
+  0%   {left:0px; top:-1000px;}
+  45%   {left:0px; top:-1000px;}
+  70%  {left:0px; top:-5px;}
+  80% {left:0px; top:3px;}
+  100% {left:0px; top:0px;}
+}
+
+@keyframes shake {
+  0%   {transform: rotateZ(-0.4deg);}
+  25%  {transform: rotateZ(0.4deg);}
+  50%  {transform: rotateZ(-0.4deg);}
+  75%  {transform: rotateZ(0.4deg);}
+  100% {transform: rotateZ(-0.4deg);}
+}
+
+@keyframes hover {
+  0%   {left:0px; top:0px;}
+  50%  {left:0px; top:-5px;}
+  100% {left:0px; top:0px;}
+}
+
+@keyframes fade {
+  0% {opacity:1;}
+  1% {opacity:0;}
+  70% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@keyframes intro {
+  0% {opacity:1;}
+  1% {opacity:1;}
+  80% {opacity:1;}
+  100% {opacity:0;}
+}
+@keyframes fadestatic {
+  0% {opacity:1;}
+  1% {opacity:0.8;}
+  50% {opacity:0.2;}
+  100% {opacity:0.15;}
+}
+
+
+</style>
+	<div id="stati" style="background-image: url('static.gif');z-index: 77;">
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+	</div>	
+		<div id="main2" >
+			<h2>ARCH</h2>
+			<p>
+			<img src="ARCH.png" alt="Smiley face" style="float:right;width:280px;height:120px;">
+			a roguelike bullet hell, my first game
+			</p>
+			<a style="color: #727272">● No DL ● </a> | <a2  href="https://www.youtube.com/playlist?list=PLfEkURAlLvvvihxOoiMwSd1IIpO4TA1PP">● Soundtrack ●</a>
+		</div>
+		<div id="main" >
+			<h2>TERRORS OF NOWHERE</h2>
+			<p>
+			<img src="Terror.png" alt="Smiley face" style="float:right;width:280px;height:120px;">
+			a chaotic party survival game hosted on the VRChat platform with over 3 million visits
+			</p>
+			<a href="https://www.youtube.com/watch?v=qycmBqDlnNI">● Trailer ●</a> | <a  href="https://vrchat.com/home/launch?worldId=wrld_a61cdabe-1218-4287-9ffc-2a4d1414e5bd">● Link ●</a> | <a style="color: #FFFFFF>" href="https://terror.moe/home/">● Wiki ●</a>
+		</div>		
+		<div id="main3" >
+			<h2>CONFINEMENT VR</h2>
+			<p>
+			<img src="Confinement.png" alt="Smiley face" style="float:right;width:280px;height:120px;">
+			trapped at the bottom of a hole in a cell, forced to work off your debt to the overlord. but you aren't alone
+			</p>
+			<a style="color: #727272">● No DL ● </a>
+		</div>
+	</div>
+</div>
