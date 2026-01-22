@@ -1,20 +1,5 @@
 (() => {
 //i'm like 99% sure this works :D
-const BEEP = new Howl({
-src: ["beep.mp3"],   // change to your file
-volume: 0.25,
-preload: true
-});
-// optional: prevent overlapping spam
-let _lastBeepMs = 0;
-function sampleBeep(minGapMs = 70) {
-if (!__audioUnlocked) return;
-const now = performance.now();
-if (now - _lastBeepMs < minGapMs) return;
-_lastBeepMs = now;
-BEEP.stop();
-BEEP.play();
-}
 function normalizePunctuation(text) {
 if (!text) return text;
 return text
@@ -2121,6 +2106,42 @@ howtofind = [
 }
 const finalhowtofind = pick(rng, howtofind);
 
+
+const verbs2 = [
+	"comforted",
+	"followed",
+	"ignored",
+	"watched",
+	"questioned",
+	"accused",
+	"blamed",
+	"warned",
+	"forgived",
+	"reported",
+	"arrested",
+	"stabbed",
+	"hugged",
+	"poked",
+	"kissed",
+	"punched",
+	"kicked",
+	"complimented",
+	"screamed at",
+	"shot",
+	"petted",
+	"ate",
+	"poked",
+	"choked",
+	"smothered",
+	"licked",
+	"tied up",
+	"abused",
+	"fed",
+	"broke",
+	"made love to",
+	"killed",
+]
+	
 const task0 = [
 "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
 "Without seeking permission, ",
@@ -2578,41 +2599,6 @@ const additionalrandom = ["","","","","","","","","","","","","","","","","","",
 " if you do not see the color "+finalcolorrequire,
 ]
 const finaladditionalrandom = pick(rng, additionalrandom);
-
-const verbs2 = [
-	"comforted",
-	"followed",
-	"ignored",
-	"watched",
-	"questioned",
-	"accused",
-	"blamed",
-	"warned",
-	"forgived",
-	"reported",
-	"arrested",
-	"stabbed",
-	"hugged",
-	"poked",
-	"kissed",
-	"punched",
-	"kicked",
-	"complimented",
-	"screamed at",
-	"shot",
-	"petted",
-	"ate",
-	"poked",
-	"choked",
-	"smothered",
-	"licked",
-	"tied up",
-	"abused",
-	"fed",
-	"broke",
-	"made love to",
-	"killed",
-]
 						
 const task1 = [
 "observe " + finalhowtofind + " from a distance",
