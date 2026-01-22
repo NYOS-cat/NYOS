@@ -2106,6 +2106,42 @@ howtofind = [
 }
 const finalhowtofind = pick(rng, howtofind);
 
+
+const verbs2 = [
+	"comforted",
+	"followed",
+	"ignored",
+	"watched",
+	"questioned",
+	"accused",
+	"blamed",
+	"warned",
+	"forgived",
+	"reported",
+	"arrested",
+	"stabbed",
+	"hugged",
+	"poked",
+	"kissed",
+	"punched",
+	"kicked",
+	"complimented",
+	"screamed at",
+	"shot",
+	"petted",
+	"ate",
+	"poked",
+	"choked",
+	"smothered",
+	"licked",
+	"tied up",
+	"abused",
+	"fed",
+	"broke",
+	"made love to",
+	"killed",
+]
+	
 const task0 = [
 "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
 "Without seeking permission, ",
@@ -2563,41 +2599,6 @@ const additionalrandom = ["","","","","","","","","","","","","","","","","","",
 " if you do not see the color "+finalcolorrequire,
 ]
 const finaladditionalrandom = pick(rng, additionalrandom);
-
-const verbs2 = [
-	"comforted",
-	"followed",
-	"ignored",
-	"watched",
-	"questioned",
-	"accused",
-	"blamed",
-	"warned",
-	"forgived",
-	"reported",
-	"arrested",
-	"stabbed",
-	"hugged",
-	"poked",
-	"kissed",
-	"punched",
-	"kicked",
-	"complimented",
-	"screamed at",
-	"shot",
-	"petted",
-	"ate",
-	"poked",
-	"choked",
-	"smothered",
-	"licked",
-	"tied up",
-	"abused",
-	"fed",
-	"broke",
-	"made love to",
-	"killed",
-]
 						
 const task1 = [
 "observe " + finalhowtofind + " from a distance",
@@ -3399,25 +3400,142 @@ return match;
 }
 );
 }
+let __audioUnlocked = false;
+const BEEP = new Howl({
+src: ["beep.mp3"],
+volume: 0.25,
+preload: true,
+});
+const BEEPSTART = new Howl({
+src: ["beepstart.mp3"],
+volume: 0.35,
+preload: true,
+});
+let _lastBeepMs = 0;
+function playBeep(minGapMs = 70) {
+if (!__audioUnlocked) return;
+const now = performance.now();
+if (now - _lastBeepMs < minGapMs) return;
+_lastBeepMs = now;
+BEEP.stop();
+BEEP.play();
+}
+function primeHowler() {
+try {
+const id = BEEP.play();
+BEEP.volume(0, id);
+BEEP.stop(id);
+BEEP.volume(0.25);
+const id2 = BEEPSTART.play();
+BEEPSTART.volume(0, id2);
+BEEPSTART.stop(id2);
+BEEPSTART.volume(0.35);
+} catch {}
+}
+async function unlockHowlerFromGesture() {
+try {
+if (window.Howler?.ctx?.state === "suspended") {
+await Howler.ctx.resume();
+}
+__audioUnlocked = (window.Howler?.ctx?.state === "running");
+if (__audioUnlocked) primeHowler();
+} catch {
+__audioUnlocked = false;
+}
+return __audioUnlocked;
+}
+function revealTextScramble(el, fromText, finalText, {
+fps = 16,
+scrambleChars = "0123456789!█▒░ABCDEF",
+blockChar = "█",
+revealSpeed = 0.045,
+blockChance = 0.35,
+beepChancePerFrame = 0.540,
+minBeepGapMs = 70
+} = {}) {
+if (el.__revealTimer) {
+clearInterval(el.__revealTimer);
+el.__revealTimer = null;
+}
+const len = Math.max(fromText.length, finalText.length);
+let progress = 0;
+function randomChar() {
+return Math.random() < blockChance
+? blockChar
+: scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+}
+el.__revealTimer = setInterval(() => {
+progress += revealSpeed * len;
+let out = "";
+for (let i = 0; i < len; i++) {
+const targetChar = finalText[i] ?? "";
+const fromChar = fromText[i] ?? "";
+if (i < progress) {
+  out += targetChar;
+} else {
+  if (targetChar === " " || fromChar === " ") out += " ";
+  else out += randomChar();
+}
+}
+el.textContent = out;
+
+if (progress < len && __audioUnlocked) {
+if (Math.random() < beepChancePerFrame) {
+  playBeep(minBeepGapMs);
+}
+}
+if (progress >= len) {
+el.textContent = finalText;
+clearInterval(el.__revealTimer);
+el.__revealTimer = null;
+}
+}, 1000 / fps);
+}
+
+function waitForClick(el) {
+return new Promise(resolve => {
+const handler = async () => {
+await unlockHowlerFromGesture();
+
+if (__audioUnlocked) {
+  BEEPSTART.stop();
+  BEEPSTART.play();
+}
+
+el.removeEventListener("click", handler);
+resolve();
+};
+el.addEventListener("click", handler);
+});
+}
 async function main() {
+const prescriptEl = document.getElementById("prescript");
+if (!prescriptEl) return;
+const CLICK_TEXT = "- Click to Receive -";
 const userId = getOrCreateUserId();
+const today = isoDayLocal();
+const lastDay = localStorage.getItem("last_day");
+let script = localStorage.getItem("prescript") || "";
+const alreadyRevealedToday = (today === lastDay && script);
+if (alreadyRevealedToday) {
+prescriptEl.classList.remove("idle");
+prescriptEl.textContent = script;
+return;
+}
+prescriptEl.textContent = CLICK_TEXT;
+prescriptEl.classList.add("idle");
+await waitForClick(prescriptEl);
 const rng = makeDailyRng(userId);
-const today = isoDayLocal(); // better than just day-of-month
-const last = localStorage.getItem("last_day");
-if (today !== last) {
-const script = generatePrescript(rng);
+script = generatePrescript(rng);
 localStorage.setItem("prescript", script);
 localStorage.setItem("last_day", today);
+prescriptEl.classList.remove("idle");
+revealTextScramble(prescriptEl, CLICK_TEXT, script, {
+revealSpeed: 0.04,
+blockChance: 0.4,
+beepChancePerFrame: 0.35,
+minBeepGapMs: 70
+});
 }
-const prescriptEl = document.getElementById("prescript");
-if (prescriptEl) {
-prescriptEl.textContent = localStorage.getItem("prescript") || "";
-}
-setInterval(() => {
-const today = isoDayLocal();
-const last = localStorage.getItem("last_day");
-if (today !== last) location.reload();
-}, 60_000); // check once per minute
-}
-main().catch(err => console.error(err));
+main();
 })();
