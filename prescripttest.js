@@ -1,5 +1,20 @@
 (() => {
 //i'm like 99% sure this works :D
+const BEEP = new Howl({
+src: ["beep.mp3"],   // change to your file
+volume: 0.25,
+preload: true
+});
+// optional: prevent overlapping spam
+let _lastBeepMs = 0;
+function sampleBeep(minGapMs = 70) {
+if (!__audioUnlocked) return;
+const now = performance.now();
+if (now - _lastBeepMs < minGapMs) return;
+_lastBeepMs = now;
+BEEP.stop();
+BEEP.play();
+}
 function normalizePunctuation(text) {
 if (!text) return text;
 return text
@@ -3400,69 +3415,64 @@ return match;
 );
 }
 let __audioUnlocked = false;
-let __beepCtx = null;
-function getBeepCtx() {
-if (__beepCtx) return __beepCtx;
-const AC = window.AudioContext || window.webkitAudioContext;
-if (!AC) return null;
-__beepCtx = new AC();
-return __beepCtx;
-}
-async function unlockAudioFromGesture() {
-const ctx = getBeepCtx();
-if (!ctx) return false;
-try {
-if (ctx.state === "suspended") {
-await ctx.resume(); 
-}
-} catch (e) {}
-__audioUnlocked = (ctx.state === "running");
-return __audioUnlocked;
-}
-function oscBeep(freq = 880, durMs = 20, volume = 0.03, type = "square") {
-const ctx = getBeepCtx();
-if (!ctx || ctx.state !== "running") return;
-const o = ctx.createOscillator();
-const g = ctx.createGain();
-o.type = type;
-o.frequency.value = freq;
-const now = ctx.currentTime;
-const dur = durMs / 1000;
-g.gain.setValueAtTime(0.0001, now);
-g.gain.exponentialRampToValueAtTime(volume, now + 0.005);
-g.gain.exponentialRampToValueAtTime(0.0001, now + dur);
-o.connect(g);
-g.connect(ctx.destination);
-o.start(now);
-o.stop(now + dur + 0.02);
-}
-function waitForClick(el) {
-return new Promise(resolve => {
-const handler = async () => {
-await unlockAudioFromGesture();
-el.removeEventListener("click", handler);
-resolve();
-};
-el.addEventListener("click", handler);
+const BEEP = new Howl({
+src: ["beep.mp3"],
+volume: 0.25,
+preload: true,
 });
+const BEEPSTART = new Howl({
+src: ["beepstart.mp3"],
+volume: 0.35,
+preload: true,
+});
+let _lastBeepMs = 0;
+function playBeep(minGapMs = 70) {
+if (!__audioUnlocked) return;
+const now = performance.now();
+if (now - _lastBeepMs < minGapMs) return;
+_lastBeepMs = now;
+BEEP.stop();
+BEEP.play();
+}
+function primeHowler() {
+try {
+const id = BEEP.play();
+BEEP.volume(0, id);
+BEEP.stop(id);
+BEEP.volume(0.25);
+const id2 = BEEPSTART.play();
+BEEPSTART.volume(0, id2);
+BEEPSTART.stop(id2);
+BEEPSTART.volume(0.35);
+} catch {}
+}
+async function unlockHowlerFromGesture() {
+try {
+if (window.Howler?.ctx?.state === "suspended") {
+await Howler.ctx.resume();
+}
+__audioUnlocked = (window.Howler?.ctx?.state === "running");
+if (__audioUnlocked) primeHowler();
+} catch {
+__audioUnlocked = false;
+}
+return __audioUnlocked;
 }
 function revealTextScramble(el, fromText, finalText, {
 fps = 16,
 scrambleChars = "0123456789!█▒░ABCDEF",
 blockChar = "█",
-revealSpeed = 0.045, 
+revealSpeed = 0.045,
 blockChance = 0.35,
 beepChancePerFrame = 0.540,
-minBeepGapMs = 70,
-beepFreqMin = 520,
-beepFreqMax = 2500,
-beepDurMs = 18,
-beepVolume = 0.025
+minBeepGapMs = 70
 } = {}) {
-if (el.__revealTimer) { clearInterval(el.__revealTimer); el.__revealTimer = null; }
+if (el.__revealTimer) {
+clearInterval(el.__revealTimer);
+el.__revealTimer = null;
+}
 const len = Math.max(fromText.length, finalText.length);
 let progress = 0;
-let lastBeepAt = 0;
 function randomChar() {
 return Math.random() < blockChance
 ? blockChar
@@ -3474,21 +3484,18 @@ let out = "";
 for (let i = 0; i < len; i++) {
 const targetChar = finalText[i] ?? "";
 const fromChar = fromText[i] ?? "";
-
 if (i < progress) {
-out += targetChar;
+  out += targetChar;
 } else {
-if (targetChar === " " || fromChar === " ") out += " ";
-else out += randomChar();
+  if (targetChar === " " || fromChar === " ") out += " ";
+  else out += randomChar();
 }
 }
 el.textContent = out;
+
 if (progress < len && __audioUnlocked) {
-const nowMs = performance.now();
-if (nowMs - lastBeepAt >= minBeepGapMs && Math.random() < beepChancePerFrame) {
-lastBeepAt = nowMs;
-const freq = beepFreqMin + Math.random() * (beepFreqMax - beepFreqMin);
-oscBeep(freq, beepDurMs + (Math.random() * 10 | 0), beepVolume, (Math.random() < 0.5 ? "square" : "triangle"));
+if (Math.random() < beepChancePerFrame) {
+  playBeep(minBeepGapMs);
 }
 }
 if (progress >= len) {
@@ -3498,42 +3505,64 @@ el.__revealTimer = null;
 }
 }, 1000 / fps);
 }
+
 function waitForClick(el) {
 return new Promise(resolve => {
 const handler = async () => {
-unlockAudioFromGesture();
+await unlockHowlerFromGesture();
+
+if (__audioUnlocked) {
+  BEEPSTART.stop();
+  BEEPSTART.play();
+}
+
 el.removeEventListener("click", handler);
 resolve();
 };
 el.addEventListener("click", handler);
 });
 }
+
 async function main() {
 const prescriptEl = document.getElementById("prescript");
 if (!prescriptEl) return;
+
 const CLICK_TEXT = "- Click to Receive -";
+
 const userId = getOrCreateUserId();
 const today = isoDayLocal();
 const lastDay = localStorage.getItem("last_day");
 let script = localStorage.getItem("prescript") || "";
+
 const alreadyRevealedToday = (today === lastDay && script);
+
 if (alreadyRevealedToday) {
 prescriptEl.classList.remove("idle");
 prescriptEl.textContent = script;
 return;
 }
+
 prescriptEl.textContent = CLICK_TEXT;
 prescriptEl.classList.add("idle");
+
 await waitForClick(prescriptEl);
+
 const rng = makeDailyRng(userId);
 script = generatePrescript(rng);
+
 localStorage.setItem("prescript", script);
 localStorage.setItem("last_day", today);
+
 prescriptEl.classList.remove("idle");
+
 revealTextScramble(prescriptEl, CLICK_TEXT, script, {
 revealSpeed: 0.04,
-blockChance: 0.4
+blockChance: 0.4,
+
+beepChancePerFrame: 0.35,
+minBeepGapMs: 70
 });
 }
+
 main();
 })();
