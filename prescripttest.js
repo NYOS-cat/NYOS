@@ -3400,26 +3400,22 @@ return match;
 );
 }
 let __audioUnlocked = false;
-function installHowlerUnlock() {
-const unlock = async () => {
+function unlockAudioFromGesture() {
 try {
 if (window.Howler && Howler.ctx) {
 if (Howler.ctx.state === "suspended") {
-await Howler.ctx.resume();
-}
+const p = Howler.ctx.resume();
+if (p && typeof p.then === "function") {
+p.then(() => { __audioUnlocked = (Howler.ctx.state === "running"); })
+.catch(() => {});
+} else {
 __audioUnlocked = (Howler.ctx.state === "running");
 }
-} catch (e) {
+} else {
+__audioUnlocked = (Howler.ctx.state === "running");
 }
-if (__audioUnlocked) {
-window.removeEventListener("pointerdown", unlock, true);
-window.removeEventListener("keydown", unlock, true);
-window.removeEventListener("touchstart", unlock, true);
 }
-};
-window.addEventListener("pointerdown", unlock, true);
-window.addEventListener("keydown", unlock, true);
-window.addEventListener("touchstart", unlock, true);
+} catch (e) {}
 }
 function oscBeep(freq = 880, durMs = 20, volume = 0.03, type = "square") {
 if (!window.Howler || !Howler.ctx) return;
@@ -3439,33 +3435,23 @@ g.connect(ctx.destination);
 o.start(now);
 o.stop(now + dur + 0.02);
 }
-function revealTextScramble(el, finalText, {
-fps = 8,
+
+function revealTextScramble(el, fromText, finalText, {
+fps = 16,
 scrambleChars = "0123456789!█▒░ABCDEF",
 blockChar = "█",
-revealSpeed = 0.035,
+revealSpeed = 0.045, 
 blockChance = 0.35,
-delayMs = 1000,
-beepChancePerFrame = 0.18,  
-minBeepGapMs = 80,     
+beepChancePerFrame = 0.22,
+minBeepGapMs = 70,
 beepFreqMin = 520,
 beepFreqMax = 1400,
 beepDurMs = 18,
 beepVolume = 0.025
 } = {}) {
-if (el.__revealTimer) {
-clearInterval(el.__revealTimer);
-el.__revealTimer = null;
-}
-if (el.__revealDelay) {
-clearTimeout(el.__revealDelay);
-el.__revealDelay = null;
-}
-el.textContent = "";
-el.__revealDelay = setTimeout(() => {
+if (el.__revealTimer) { clearInterval(el.__revealTimer); el.__revealTimer = null; }
+const len = Math.max(fromText.length, finalText.length);
 let progress = 0;
-const len = finalText.length;
-const frameTime = 1000 / fps;
 let lastBeepAt = 0;
 function randomChar() {
 return Math.random() < blockChance
@@ -3476,9 +3462,15 @@ el.__revealTimer = setInterval(() => {
 progress += revealSpeed * len;
 let out = "";
 for (let i = 0; i < len; i++) {
-if (i < progress) out += finalText[i];
-else if (finalText[i] === " ") out += " ";
+const targetChar = finalText[i] ?? "";
+const fromChar = fromText[i] ?? "";
+
+if (i < progress) {
+out += targetChar;
+} else {
+if (targetChar === " " || fromChar === " ") out += " ";
 else out += randomChar();
+}
 }
 el.textContent = out;
 if (progress < len && __audioUnlocked) {
@@ -3486,8 +3478,7 @@ const nowMs = performance.now();
 if (nowMs - lastBeepAt >= minBeepGapMs && Math.random() < beepChancePerFrame) {
 lastBeepAt = nowMs;
 const freq = beepFreqMin + Math.random() * (beepFreqMax - beepFreqMin);
-const dur = beepDurMs + Math.floor(Math.random() * 10);
-oscBeep(freq, dur, beepVolume, (Math.random() < 0.5 ? "square" : "triangle"));
+oscBeep(freq, beepDurMs + (Math.random() * 10 | 0), beepVolume, (Math.random() < 0.5 ? "square" : "triangle"));
 }
 }
 if (progress >= len) {
@@ -3495,34 +3486,44 @@ el.textContent = finalText;
 clearInterval(el.__revealTimer);
 el.__revealTimer = null;
 }
-}, frameTime);
-}, delayMs);
+}, 1000 / fps);
+}
+function waitForClick(el) {
+return new Promise(resolve => {
+const handler = async () => {
+unlockAudioFromGesture();
+el.removeEventListener("click", handler);
+resolve();
+};
+el.addEventListener("click", handler);
+});
 }
 async function main() {
-installHowlerUnlock();
+const prescriptEl = document.getElementById("prescript");
+if (!prescriptEl) return;
+const CLICK_TEXT = "- Click to Receive -";
 const userId = getOrCreateUserId();
+const today = isoDayLocal();
+const lastDay = localStorage.getItem("last_day");
+let script = localStorage.getItem("prescript") || "";
+const alreadyRevealedToday = (today === lastDay && script);
+if (alreadyRevealedToday) {
+prescriptEl.classList.remove("idle");
+prescriptEl.textContent = script;
+return;
+}
+prescriptEl.textContent = CLICK_TEXT;
+prescriptEl.classList.add("idle");
+await waitForClick(prescriptEl);
 const rng = makeDailyRng(userId);
-const today = isoDayLocal(); // better than just day-of-month
-const last = localStorage.getItem("last_day");
-if (today !== last) {
-const script = generatePrescript(rng);
+script = generatePrescript(rng);
 localStorage.setItem("prescript", script);
 localStorage.setItem("last_day", today);
-}
-const prescriptEl = document.getElementById("prescript");
-if (prescriptEl) {
-const text = localStorage.getItem("prescript") || "";
-prescriptEl.textContent = ""; // 
-revealTextScramble(prescriptEl, text, {
-revealSpeed: 0.04, 
+prescriptEl.classList.remove("idle");
+revealTextScramble(prescriptEl, CLICK_TEXT, script, {
+revealSpeed: 0.04,
 blockChance: 0.4
 });
 }
-setInterval(() => {
-const today = isoDayLocal();
-const last = localStorage.getItem("last_day");
-if (today !== last) location.reload();
-}, 60_000); // check once per minute
-}
-main().catch(err => console.error(err));
+main();
 })();
