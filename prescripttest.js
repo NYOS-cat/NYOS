@@ -3400,27 +3400,28 @@ return match;
 );
 }
 let __audioUnlocked = false;
-function unlockAudioFromGesture() {
+let __beepCtx = null;
+function getBeepCtx() {
+if (__beepCtx) return __beepCtx;
+const AC = window.AudioContext || window.webkitAudioContext;
+if (!AC) return null;
+__beepCtx = new AC();
+return __beepCtx;
+}
+async function unlockAudioFromGesture() {
+const ctx = getBeepCtx();
+if (!ctx) return false;
 try {
-if (window.Howler && Howler.ctx) {
-if (Howler.ctx.state === "suspended") {
-const p = Howler.ctx.resume();
-if (p && typeof p.then === "function") {
-p.then(() => { __audioUnlocked = (Howler.ctx.state === "running"); })
-.catch(() => {});
-} else {
-__audioUnlocked = (Howler.ctx.state === "running");
-}
-} else {
-__audioUnlocked = (Howler.ctx.state === "running");
-}
+if (ctx.state === "suspended") {
+await ctx.resume(); 
 }
 } catch (e) {}
+__audioUnlocked = (ctx.state === "running");
+return __audioUnlocked;
 }
 function oscBeep(freq = 880, durMs = 20, volume = 0.03, type = "square") {
-if (!window.Howler || !Howler.ctx) return;
-const ctx = Howler.ctx;
-if (ctx.state !== "running") return;
+const ctx = getBeepCtx();
+if (!ctx || ctx.state !== "running") return;
 const o = ctx.createOscillator();
 const g = ctx.createGain();
 o.type = type;
@@ -3435,7 +3436,16 @@ g.connect(ctx.destination);
 o.start(now);
 o.stop(now + dur + 0.02);
 }
-
+function waitForClick(el) {
+return new Promise(resolve => {
+const handler = async () => {
+await unlockAudioFromGesture();
+el.removeEventListener("click", handler);
+resolve();
+};
+el.addEventListener("click", handler);
+});
+}
 function revealTextScramble(el, fromText, finalText, {
 fps = 16,
 scrambleChars = "0123456789!█▒░ABCDEF",
